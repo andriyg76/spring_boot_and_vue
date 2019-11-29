@@ -56,10 +56,10 @@
   </div>
 </template>
 
-<script type="ts">
+<script type="typescript">
 
     // visibility filters
-    import api from "../api";
+    import api, { Todo } from "../api";
 
     let filters = {
         all: function (todos) {
@@ -152,12 +152,15 @@
                     return
                 }
 
-                this.todos.push({
-                    title: value,
-                    completed: false
-                });
+                this.loading = true
+                api.createNew(value, false).then((todo) => {
+                  this.todos.push(todo.data)
+                  this.newTodo = ''
+                }).catch(error => {
+                  this.$log.debug(error)
+                  this.error = "Failed to load todos"
+                }).finally(() => this.loading = false)
 
-                this.newTodo = ''
             },
 
             setVisibility: function(vis) {
