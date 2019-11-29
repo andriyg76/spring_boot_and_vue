@@ -10,21 +10,21 @@
 </template>
 
 <script type="ts">
-    import Todos from './components/Todos.vue'
-    // app Vue instance
-    const app = {
-        name: 'app',
-        components: {
-            Todos
-        },
-        // app initial state
-        data: () => {
-            return {
-            }
-        }
+  import Todos from './components/Todos.vue'
+  // app Vue instance
+  const app = {
+    name: 'app',
+    components: {
+      Todos
+    },
+    // app initial state
+    data() {
+      return {
+      }
     }
+  }
 
-    export default app
+  export default app
 </script>
 
 <style>

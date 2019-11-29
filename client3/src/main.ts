@@ -19,7 +19,5 @@ Vue.use(VueLogger, options);
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  template: '<App/>',
-  components: { App }
-});
+  render: h => h(App),
+}).$mount('#app')

@@ -59,6 +59,8 @@
 <script type="ts">
 
     // visibility filters
+    import api from "../api";
+
     let filters = {
         all: function (todos) {
             return todos
@@ -94,12 +96,18 @@
             }
         },
 
-        mounted() {
-            // inject some startup data
-            this.todos = [{title: 'Drink coffee', completed:false},{title: 'Write REST API', completed:false}];
-            // hide the loading message
-            this.loading = false;
-        },
+      mounted() {
+        api.getAll()
+                .then(response => {
+                  this.$log.debug("Data loaded: ", response.data)
+                  this.todos = response.data
+                })
+                .catch(error => {
+                  this.$log.debug(error)
+                  this.error = "Failed to load todos"
+                })
+                .finally(() => this.loading = false)
+      },
 
         // computed properties
         // http://vuejs.org/guide/computed.html
