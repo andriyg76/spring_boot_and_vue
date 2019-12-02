@@ -57,10 +57,10 @@
 </template>
 
 <script lang="ts">
+    import api, { Todo } from "../api";
+    import {AxiosError, AxiosResponse} from "axios";
 
     // visibility filters
-    import api, { Todo } from "../api";
-
     let filters = {
         all(todos: Todo[]): Todo[] {
             return todos
@@ -94,7 +94,7 @@
         },
 
         // app initial state
-        data: function() {
+        data() {
             return {
                 todos: [],
                 newTodo: '',
@@ -107,11 +107,11 @@
 
         mounted() {
             api.getAll()
-                .then((response: Promise<Todo[]>): Promise<Todo[]> => {
+                .then((response: AxiosResponse<Todo[]>) => {
                     this.$log.debug("Data loaded: ", response.data)
                     this.todos = response.data
                 })
-                .catch((error: Throwable): Promise<Todo[]> => {
+                .catch((error: AxiosError) => {
                     this.$log.debug(error)
                     this.error = "Failed to load todos"
                 })
@@ -181,8 +181,14 @@
                 todo.completed = true
             },
 
-            removeTodo: function (todo) { // notice NOT using "=>" syntax
+            removeTodo: function (todo: Todo) { // notice NOT using "=>" syntax
+              this.loading = true
+              api.removeForId(todo.id).then(() => {
                 this.todos.splice(this.todos.indexOf(todo), 1)
+              }).catch(error => {
+                this.$log.debug(error)
+                this.error = "Failed to load todos"
+              }).finally(() => this.loading = false)
             },
 
             editTodo: function (todo) {
@@ -190,7 +196,7 @@
                 this.editedTodo = todo
             },
 
-            doneEdit: function (todo) {
+            doneEdit(todo: Todo) {
                 if (!this.editedTodo) {
                     return
                 }
@@ -203,16 +209,16 @@
                 }
             },
 
-            cancelEdit: function (todo) {
+            cancelEdit(todo: Todo) {
                 this.editedTodo = null
                 todo.title = this.beforeEditCache
             },
 
-            removeCompleted: function () {
+            removeCompleted() {
                 this.todos = filters.active(this.todos)
             },
 
-            handleErrorClick: function () {
+            handleErrorClick() {
                 this.error = null;
             },
         },
