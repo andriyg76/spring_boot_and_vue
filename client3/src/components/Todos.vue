@@ -56,25 +56,34 @@
   </div>
 </template>
 
-<script type="typescript">
+<script lang="ts">
 
     // visibility filters
     import api, { Todo } from "../api";
 
     let filters = {
-        all: function (todos) {
+        all(todos: Todo[]): Todo[] {
             return todos
         },
-        active: function (todos) {
-            return todos.filter(function (todo) {
+        active(todos: Todo[]): Todo[] {
+            return todos.filter(function (todo: Todo) {
                 return !todo.completed
             })
         },
-        completed: function (todos) {
-            return todos.filter(function (todo) {
+        completed(todos: Todo[]): Todo[] {
+            return todos.filter(function (todo: Todo) {
                 return todo.completed
             })
         }
+    }
+
+    interface TodosState {
+        todos: Todo[],
+        newTodo: string,
+        editedTodo: Todo | null,
+        visibility: string,
+        loading: boolean,
+        error: string | null
     }
 
     // app Vue instance
@@ -93,51 +102,52 @@
                 visibility: 'all',
                 loading: true,
                 error: null,
-            }
+            } as TodosState
         },
 
-      mounted() {
-        api.getAll()
-                .then(response => {
-                  this.$log.debug("Data loaded: ", response.data)
-                  this.todos = response.data
+        mounted() {
+            api.getAll()
+                .then((response: Promise<Todo[]>): Promise<Todo[]> => {
+                    this.$log.debug("Data loaded: ", response.data)
+                    this.todos = response.data
                 })
-                .catch(error => {
-                  this.$log.debug(error)
-                  this.error = "Failed to load todos"
+                .catch((error: Throwable): Promise<Todo[]> => {
+                    this.$log.debug(error)
+                    this.error = "Failed to load todos"
                 })
                 .finally(() => this.loading = false)
-      },
+
+        },
 
         // computed properties
         // http://vuejs.org/guide/computed.html
         computed: {
-            filteredTodos: function () {
+            filteredTodos(): Todo[] {
                 return filters[this.visibility](this.todos)
             },
-            remaining: function () {
+            remaining(): Todo[] {
                 return filters.active(this.todos).length
             },
-            allDone: {
-                get: function () {
+            allDone:  {
+                get(): boolean {
                     return this.remaining === 0
                 },
-                set: function (value) {
-                    this.todos.forEach(function (todo) {
+                set(value: boolean) {
+                    this.todos.forEach(function (todo: Todo) {
                         todo.completed = value
                     })
                 }
             },
-            userEmail: function () {
+            userEmail(): string {
                 return this.activeUser ? this.activeUser.email : ''
             },
-            inputPlaceholder: function () {
+            inputPlaceholder(): string {
                 return this.activeUser ? this.activeUser.given_name + ', what needs to be done?' : 'What needs to be done?'
             }
         },
 
         filters: {
-            pluralize: function (n) {
+            pluralize: function (n: number) {
                 return n === 1 ? 'item' : 'items'
             }
         },
@@ -146,7 +156,7 @@
         // note there's no DOM manipulation here at all.
         methods: {
 
-            addTodo: function () {
+            addTodo() {
                 var value = this.newTodo && this.newTodo.trim()
                 if (!value) {
                     return
@@ -163,11 +173,12 @@
 
             },
 
-            setVisibility: function(vis) {
+            setVisibility(vis: string) {
                 this.visibility = vis
             },
 
-            completeTodo (todo) {
+            completeTodo (todo: Todo) {
+                todo.completed = true
             },
 
             removeTodo: function (todo) { // notice NOT using "=>" syntax

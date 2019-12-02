@@ -34,7 +34,7 @@ open class SpringBootAndVueApplication {
         val config = CorsConfiguration()
         config.allowCredentials = true
         // *** URL below needs to match the Vue client URL and port ***
-        config.allowedOrigins = listOf("http://localhost:8080")
+        config.allowedOrigins = listOf("*")
         config.allowedMethods = listOf("*")
         config.allowedHeaders = listOf("*")
         source.registerCorsConfiguration("/**", config)
