@@ -11,8 +11,9 @@
 
 <script type="ts">
   import Todos from './components/Todos.vue'
+  import Vue from "vue";
   // app Vue instance
-  const app = {
+  const app = Vue.extend({
     name: 'app',
     components: {
       Todos
@@ -23,6 +24,7 @@
       }
     }
   }
+  )
 
   export default app
 </script>

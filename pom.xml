@@ -108,6 +108,75 @@
 				</dependencies>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>client3/dist</directory>
+				<targetPath>static/</targetPath>
+			</resource>
+		</resources>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>ui</id>
+
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>clean-ui</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
+									<followSymLinks>false</followSymLinks>
+									<filesets>
+										<fileset>
+											<directory>${basedir}/client3/dist</directory>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.6.0</version>
+
+						<executions>
+							<execution>
+								<id>build-ui</id>
+
+								<goals><goal>exec</goal></goals>
+								<phase>generate-resources</phase>
+								<configuration>
+									<workingDirectory>${project.basedir}/client3</workingDirectory>
+									<executable>yarn</executable>
+									<arguments>
+										<argument>run</argument>
+										<argument>build</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+
+	</profiles>
 
 </project>

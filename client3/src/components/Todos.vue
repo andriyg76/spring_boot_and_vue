@@ -58,10 +58,11 @@
 
 <script lang="ts">
     import api, { Todo } from "../api";
-    import {AxiosError, AxiosResponse} from "axios";
+    import Vue from 'vue';
+    import { AxiosResponse} from "axios";
 
     // visibility filters
-    let filters = {
+    let filters: { [id: string]: (todo: Todo[]) => Todo[] } = {
         all(todos: Todo[]): Todo[] {
             return todos
         },
@@ -80,6 +81,7 @@
     interface TodosState {
         todos: Todo[],
         newTodo: string,
+        beforeEditCache?: string | null,
         editedTodo: Todo | null,
         visibility: string,
         loading: boolean,
@@ -87,7 +89,7 @@
     }
 
     // app Vue instance
-    const Todos = {
+    const Todos = Vue.extend({
         name: 'Todos',
         props: {
             activeUser: Object
@@ -111,7 +113,7 @@
                     this.$log.debug("Data loaded: ", response.data)
                     this.todos = response.data
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: any) => {
                     this.$log.debug(error)
                     this.error = "Failed to load todos"
                 })
@@ -125,7 +127,7 @@
             filteredTodos(): Todo[] {
                 return filters[this.visibility](this.todos)
             },
-            remaining(): Todo[] {
+            remaining(): number {
                 return filters.active(this.todos).length
             },
             allDone:  {
@@ -155,9 +157,8 @@
         // methods that implement data logic.
         // note there's no DOM manipulation here at all.
         methods: {
-
             addTodo() {
-                var value = this.newTodo && this.newTodo.trim()
+                const value = this.newTodo && this.newTodo.trim()
                 if (!value) {
                     return
                 }
@@ -191,12 +192,12 @@
               }).finally(() => this.loading = false)
             },
 
-            editTodo: function (todo) {
+            editTodo(todo: Todo) {
                 this.beforeEditCache = todo.title
                 this.editedTodo = todo
             },
 
-            doneEdit(todo: Todo) {
+            doneEdit(todo: Todo)  {
                 if (!this.editedTodo) {
                     return
                 }
@@ -211,7 +212,9 @@
 
             cancelEdit(todo: Todo) {
                 this.editedTodo = null
-                todo.title = this.beforeEditCache
+                if (this.beforeEditCache) {
+                    todo.title = this.beforeEditCache
+                }
             },
 
             removeCompleted() {
@@ -227,13 +230,13 @@
         // before focusing on the input field.
         // http://vuejs.org/guide/custom-directive.html
         directives: {
-            'todo-focus': function (el, binding) {
+            'todo-focus': function (el: HTMLElement, binding: { value?: boolean }) {
                 if (binding.value) {
                     el.focus()
                 }
             }
         }
-    }
+    })
 
     export default Todos
 </script>
