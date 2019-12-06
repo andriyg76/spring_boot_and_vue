@@ -78,16 +78,6 @@
         }
     }
 
-    interface TodosState {
-        todos: Todo[],
-        newTodo: string,
-        beforeEditCache?: string | null,
-        editedTodo: Todo | null,
-        visibility: string,
-        loading: boolean,
-        error: string | null
-    }
-
     // app Vue instance
     const Todos = Vue.extend({
         name: 'Todos',
@@ -98,13 +88,14 @@
         // app initial state
         data() {
             return {
-                todos: [],
-                newTodo: '',
-                editedTodo: null,
+                todos: [] as Todo[],
+                newTodo: '' as string,
+                editedTodo: null as Todo | null,
+                beforeEditCache: null as string | null,
                 visibility: 'all',
                 loading: true,
-                error: null,
-            } as TodosState
+                error: null as any,
+            }
         },
 
         mounted() {
