@@ -1,12 +1,12 @@
 ---
 kind: pipeline
-type: exec
-
-platform:
-  os: linux
-  arch: amd64
+name: default
 
 steps:
-  - name: greeting
-    commands:
-      - docker build -t andriygEdu/spring_boot_and_vue .
+  - name: docker
+    image: plugins/docker
+    settings:
+      username: "-"
+      password: "-"
+      repo: andriygEdu/spring_boot_and_vue
+      tags: latest
