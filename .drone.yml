@@ -1,0 +1,12 @@
+---
+kind: pipeline
+type: exec
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: greeting
+    commands:
+      - docker build -t andriygEdu/spring_boot_and_vue .
