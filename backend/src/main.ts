@@ -5,7 +5,7 @@ Vue.config.productionTip = false
 
 import VueLogger from 'vuejs-logger';
 
-const options = {
+Vue.use(VueLogger, {
   isEnabled: true,
   logLevel : 'debug',
   stringifyArguments : false,
@@ -13,9 +13,7 @@ const options = {
   showMethodName : false,
   separator: '|',
   showConsoleColors: true
-};
-
-Vue.use(VueLogger, options);
+});
 
 /* eslint-disable no-new */
 new Vue({
