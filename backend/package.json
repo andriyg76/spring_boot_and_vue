@@ -12,7 +12,8 @@
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0",
-    "vuejs-logger": "^1.5.5"
+    "vuejs-logger": "^1.5.5",
+    "ssri": "^8.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "^4.1.0",
