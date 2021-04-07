@@ -31,7 +31,9 @@ RUN \
     groupadd  vue -g 1006 && \
     adduser --ingroup vue --uid 1006 vue && \
     true
-USER oranta
+
+USER vue
+
 COPY --from=1 /vue/target/*.war /vue/spring_boot_and_vue.war
 ENV JAVA_OPTS ""
 CMD java $JAVA_OPTS -jar /vue/spring_boot_and_vue.war
