@@ -18,12 +18,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set default tag
-        run: echo "::set-output name=DOCKER_TAG::latest"
+      - name: Set default docker tag label
+        run: echo "DOCKER_TAG=latest" >> $GITHUB_ENV
 
-      - name: Set branchname for master
+      - name: Set docker tag label for git tags
         if: startsWith(github.ref, 'ref/tags/')
-        run: echo "::set-env name=DOCKER_TAG::$( github.ref.replace(/\/refs\/tags\//, '') )"
+        run: echo "DOCKER_TAG=$( github.ref.replace(/\/refs\/tags\//, '') )" >> $GITHUB_ENV
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
