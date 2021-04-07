@@ -101,11 +101,9 @@
         mounted() {
             api.getAll()
                 .then((response: AxiosResponse<Todo[]>) => {
-                    this.$log.debug("Data loaded: ", response.data)
                     this.todos = response.data
                 })
                 .catch((error: any) => {
-                    this.$log.debug(error)
                     this.error = "Failed to load todos"
                 })
                 .finally(() => this.loading = false)
@@ -159,7 +157,6 @@
                   this.todos.push(todo.data)
                   this.newTodo = ''
                 }).catch(error => {
-                  this.$log.debug(error)
                   this.error = "Failed to load todos"
                 }).finally(() => this.loading = false)
 
@@ -178,7 +175,6 @@
               api.removeForId(todo.id).then(() => {
                 this.todos.splice(this.todos.indexOf(todo), 1)
               }).catch(error => {
-                this.$log.debug(error)
                 this.error = "Failed to load todos"
               }).finally(() => this.loading = false)
             },
