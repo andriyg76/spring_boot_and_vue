@@ -29,14 +29,14 @@ jobs:
         name: Java Maven release
         # You may pin to the exact commit or the version.
         # uses: qcastel/github-actions-maven-release@8db2f7e711f53486d5397fa97262add04a098473
-        uses: qcastel/github-actions-maven-release@v1.12.12
+        uses: qcastel/github-actions-maven-cmd@master
         with:
+          maven-args: "release:prepare"
+
           # The SSH private key used during the maven release git commit
           ssh-private-key: ${{ secrets.SSH_KEY }}
           # The SSH passphrase
           ssh-passphrase: ${{ secrets.SSH_KEYPASS }}
-          # The maven arguments for the release
-          maven-args: # optional, default is 
           # Skip maven release perform
           skip-perform: true
           # Github access token. https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
