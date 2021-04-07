@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>eu.andriydc.edu</groupId>
 	<artifactId>spring_boot_and_vue</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>spring_boot_and_vue</name>
 	<description>Demo project for Spring Boot</description>
@@ -17,7 +17,7 @@
 	<scm>
 		<developerConnection>scm:git:git@github.com:andriyg76/spring_boot_and_vue.git</developerConnection>
 		<connection>scm:git:git@github.com:andriyg76/spring_boot_and_vue.git</connection>
-		<tag>v0.0.4</tag>
+		<tag>head</tag>
 	</scm>
 
 	<properties>
