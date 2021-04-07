@@ -182,6 +182,7 @@
 						<artifactId>maven-release-plugin</artifactId>
 						<configuration>
 							<scmCommentPrefix>[ci skip] </scmCommentPrefix>
+							<tagNameFormat>v@{project.version}</tagNameFormat>
 						</configuration>
 					</plugin>
 				</plugins>
