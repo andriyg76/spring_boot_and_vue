@@ -112,6 +112,13 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<scmCommentPrefix>[ci skip]_</scmCommentPrefix>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
@@ -122,6 +129,7 @@
 				<targetPath>static/</targetPath>
 			</resource>
 		</resources>
+
 	</build>
 
 	<profiles>
@@ -178,13 +186,6 @@
 						</executions>
 					</plugin>
 
-					<plugin>
-						<artifactId>maven-release-plugin</artifactId>
-						<configuration>
-							<scmCommentPrefix>[ci skip] </scmCommentPrefix>
-							<tagNameFormat>v@{project.version}</tagNameFormat>
-						</configuration>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
