@@ -3,6 +3,7 @@ name: Docker master branch
 on:
   push:
     branches: [ master ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ master ]
 
@@ -14,18 +15,26 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
 
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Login to DockerHub
+
+      - name: Set default tag
+        id: tag_name
+        run: echo "::set-output name=docker_tag::latest"
+
+      - name: Set branchname for master
+        id: tag_name
+        if: startsWith(github.ref, 'ref/tags/')
+        run: echo "::set-output name=docker_tag::${{ github.ref.replace(/\/refs\/tags\//, '') }}"
+
+      - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push Docker image
+
+      - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: andriygedu/spring_boot_and_vue:latest
+          tags: andriygedu/spring_boot_and_vue:${{ steps.tag_name.outputs.tag_name }}
