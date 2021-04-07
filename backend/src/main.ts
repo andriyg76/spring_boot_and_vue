@@ -3,17 +3,17 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
-// import VueLogger from 'vuejs-logger';
-//
-// Vue.use(VueLogger, {
-//   isEnabled: true,
-//   logLevel : 'debug',
-//   stringifyArguments : false,
-//   showLogLevel : true,
-//   showMethodName : false,
-//   separator: '|',
-//   showConsoleColors: true
-// });
+import VueLogger from 'vuejs-logger/dist/vue-logger';
+
+Vue.use(VueLogger, {
+  isEnabled: true,
+  logLevel : process.env.NODE_ENV === 'production' ? 'error' : 'debug',
+  stringifyArguments : false,
+  showLogLevel : true,
+  showMethodName : true,
+  separator: '|',
+  showConsoleColors: true
+});
 
 /* eslint-disable no-new */
 new Vue({
