@@ -15,8 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 
 	<scm>
-		<developerConnection>scm:git:-</developerConnection>
-		<connection>scm:git:-</connection>
+		<developerConnection>scm:git:git@github.com:andriyg76/spring_boot_and_vue.git</developerConnection>
+		<connection>scm:git:git@github.com:andriyg76/spring_boot_and_vue.git</connection>
 		<tag>head</tag>
 	</scm>
 
