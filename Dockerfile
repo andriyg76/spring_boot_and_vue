@@ -17,8 +17,7 @@ WORKDIR /vue/
 COPY --from=0 /vue/ .
 
 RUN \
-    mvn versions:set -DnewVersion=${VERSION} && \
-    mvn package ${mvn_params} && \
+    mvn clean package ${mvn_params} && \
     true
 
 FROM openjdk:11-jre-slim
