@@ -46,5 +46,5 @@ jobs:
         with:
           push: true
           tags: andriygedu/spring_boot_and_vue:${{ env.TAG }}
-          build-args:
-            - mvn_params="-Pnotests"
+          build-args: |
+            mvn_params="-Pnotests"
