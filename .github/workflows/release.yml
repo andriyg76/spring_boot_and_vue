@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Java Maven release
+      - name: Maven release prepare
         uses: qcastel/github-actions-maven-release@v1.12.16
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
