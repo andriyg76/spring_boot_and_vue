@@ -16,11 +16,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Java Maven release
+
+      - name: Java Maven release
         uses: qcastel/github-actions-maven-release@v1.12.16
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
@@ -48,4 +47,4 @@ jobs:
           push: true
           tags: andriygedu/spring_boot_and_vue:${{ env.TAG }}
           build-args:
-            - mvn_params: "-Pnotests"
+            - mvn_params="-Pnotests"
