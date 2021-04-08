@@ -1,7 +1,4 @@
-ARG VERSION=SNAPSHOT
-ARG http_proxy=""
-ARG https_proxy=""
-ARG no_proxy=""
+ARG mvn_params=""
 
 FROM node:lts-alpine
 WORKDIR /vue/
@@ -21,7 +18,7 @@ COPY --from=0 /vue/ .
 
 RUN \
     mvn versions:set -DnewVersion=${VERSION} && \
-    mvn package -Pnotests && \
+    mvn package ${mvn_params} && \
     true
 
 FROM openjdk:11-jre-slim

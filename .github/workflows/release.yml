@@ -1,16 +1,10 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Maven release prepare
+name: Maven release prepare and make/push numbered release docker image
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ none ]
-  pull_request:
-    branches: [ none ]
-
-  # Allows you to run this workflow manually from the Actions tab
+  # Triggers workflow only manually
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -19,7 +13,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -36,3 +29,23 @@ jobs:
 
           # The SSH private key used during the maven release git commit
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Resolve release version
+        run: echo "TAG=$( git describe --tags --abbrev=0 HEAD )" >> $GITHUB_ENV
+
+      - name: Resolve release version
+        run: git checkout ${{ env.TAG }}
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: andriygedu/spring_boot_and_vue:${{ env.TAG }}
+          build-args:
+            - mvn_params: "-Pnotests"

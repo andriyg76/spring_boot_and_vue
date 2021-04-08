@@ -1,10 +1,8 @@
-name: Docker master branch
+name: Exec tests and build docker image
 
 on:
   push:
     branches: [ master ]
-    tags:
-      - 'v*'
 
   pull_request:
     branches: [ master ]
@@ -26,9 +24,13 @@ jobs:
       - name: Set default docker tag label
         run: echo "DOCKER_TAG=latest" >> $GITHUB_ENV
 
+      - name: Set docker tag label for git branches
+        if: startsWith(github.ref, 'refs/heads/')
+        run: echo "DOCKER_TAG=$( echo $GITHUB_REF | cut -d / -f 3- )" >> $GITHUB_ENV
+
       - name: Set docker tag label for git tags
         if: startsWith(github.ref, 'refs/tags/')
-        run: echo "DOCKER_TAG=$( echo $GITHUB_REF | cut -d / -f 3 )" >> $GITHUB_ENV
+        run: echo "DOCKER_TAG=$( echo $GITHUB_REF | cut -d / -f 3- )" >> $GITHUB_ENV
 
       - name: Print parameters
         run: echo "image_tag=${{ env.DOCKER_TAG }} reference=${{ github.ref }}"
